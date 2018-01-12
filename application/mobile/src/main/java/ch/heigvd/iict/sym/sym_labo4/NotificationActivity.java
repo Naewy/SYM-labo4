@@ -3,24 +3,56 @@ package ch.heigvd.iict.sym.sym_labo4;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import ch.heigvd.iict.sym.wearcommon.Constants;
 
 public class NotificationActivity extends AppCompatActivity {
 
+    private Button buttonSimple;
+    private Button actionButton;
+    private Button buttonWearables;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
 
+        this.buttonSimple = (Button) findViewById(R.id.button1);
+        this.actionButton= (Button) findViewById(R.id.button2);
+        this.buttonWearables = (Button) findViewById(R.id.button3);
+
         if(getIntent() != null)
             onNewIntent(getIntent());
 
-        /* A IMPLEMENTER */
+        buttonSimple.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int notificationId = 001; // The channel ID of the notification.
+                String id = "my_channel_01"; // Build intent for notification content
+                Intent viewIntent = new Intent(NotificationActivity.this, NotificationActivity.class);
+                PendingIntent viewPendingIntent = PendingIntent.getActivity(NotificationActivity.this, 0, viewIntent, 0);
 
+                NotificationCompat.Builder notificationBuilder =
+                    new NotificationCompat.Builder(NotificationActivity.this, "001")
+                        .setSmallIcon(R.drawable.ic_alert_white_18dp)
+                        .setContentTitle("Toto")
+                        .setContentText("Yverdon les bains de sang")
+                        .setContentIntent(viewPendingIntent);
+
+                // Get an instance of the NotificationManager service
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(NotificationActivity.this);
+
+                // Issue the notification with notification manager.
+                notificationManager.notify(notificationId, notificationBuilder.build());
+            }
+        });
     }
 
     /* A IMPLEMENTER */

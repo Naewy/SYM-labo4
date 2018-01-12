@@ -6,5 +6,10 @@
 
     <string name="notification_btn_display_notification">Display</string>
     <string name="notification_wear_action">Say Hello !</string>
+    <string name="welcome_notification_activity">Sélectionnez un type de notification</string>
+    <string name="button_1">Simple</string>
+    <string name="button_2">Action Buttons</string>
+    <string name="button_3">Wearable-only Actions.</string>
+
 
 </resources>
