@@ -6,9 +6,21 @@ import android.support.wearable.activity.WearableActivity;
 
 import com.bozapro.circularsliderrange.CircularSliderRange;
 import com.bozapro.circularsliderrange.ThumbEvent;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.wearable.DataClient;
+import com.google.android.gms.wearable.DataItem;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
+import com.google.android.gms.wearable.Wearable;
 
 import ch.heigvd.iict.sym.sym_labo4.widgets.CircularSliderRangeFixed;
+import ch.heigvd.iict.sym.wearcommon.Constants;
 
+
+/*
+ * Allow us to send colors to the mobile application by modified sliders
+ * Modified by Lara Chauffoureaux, Tano Iannetta and Wojciech Myszkorowski
+ */
 public class MainActivityWear extends WearableActivity {
 
     private static final String TAG = MainActivityWear.class.getSimpleName();
@@ -26,6 +38,10 @@ public class MainActivityWear extends WearableActivity {
     private double endAngleGreen    = 90+60;
     private double endAngleBlue     = 90+90;
 
+    // for API Data Layer
+    private DataClient dataClient;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +53,8 @@ public class MainActivityWear extends WearableActivity {
         this.redSlider      = findViewById(R.id.circular_red);
         this.greenSlider    = findViewById(R.id.circular_green);
         this.blueSlider     = findViewById(R.id.circular_blue);
+
+         dataClient = Wearable.getDataClient(MainActivityWear.this);
 
         //events
         this.redSlider.setOnSliderRangeMovedListener(new CircularSliderRange.OnSliderRangeMovedListener() {
@@ -85,12 +103,7 @@ public class MainActivityWear extends WearableActivity {
         });
 
         updateColor();
-
-        /* A IMPLEMENTER */
     }
-
-    /* A IMPLEMENTER */
-
     @Override
     public void onEnterAmbient(Bundle ambientDetails) {
         super.onEnterAmbient(ambientDetails);
@@ -127,7 +140,16 @@ public class MainActivityWear extends WearableActivity {
         int g = (int) Math.round(255 * ((endAngleGreen - startAngleGreen) % 360) / 360.0);
         int b = (int) Math.round(255 * ((endAngleBlue  - startAngleBlue)  % 360) / 360.0);
 
-        /* A IMPLEMENTER */
+
+
+        // Send colors
+        PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(Constants.COLORS);
+        putDataMapRequest.getDataMap().putInt(Constants.RED, r);
+        putDataMapRequest.getDataMap().putInt(Constants.GREEN, g);
+        putDataMapRequest.getDataMap().putInt(Constants.BLUE, b);
+
+        PutDataRequest putDataRequest = putDataMapRequest.asPutDataRequest();
+        Task<DataItem> putTaskData = dataClient.putDataItem(putDataRequest);
     }
 
 }
