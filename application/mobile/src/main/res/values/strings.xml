@@ -8,8 +8,16 @@
     <string name="notification_wear_action">Say Hello !</string>
     <string name="welcome_notification_activity">Sélectionnez un type de notification</string>
     <string name="button_1">Simple</string>
-    <string name="button_2">Action Buttons</string>
-    <string name="button_3">Wearable-only Actions.</string>
-
+    <string name="button_2">Action Button</string>
+    <string name="button_3">Wearable-only Actions</string>
+    <string name="channel_1">my_channel_01</string>
+    <string name="channel_2">my_channel_02</string>
+    <string name="channel_3">my_channel_03</string>
+    <string name="notif_title_1">My notification 1</string>
+    <string name="notif_title_2">My notification 2 click me</string>
+    <string name="notif_title_3">My notification 3 click me</string>
+    <string name="notif_content_1">This is my first notification</string>
+    <string name="notif_content_2">This is my second notification, press the icon to open the map</string>
+    <string name="notif_content_3">Press the icon to open the map. This is available on the watch only.</string>
 
 </resources>

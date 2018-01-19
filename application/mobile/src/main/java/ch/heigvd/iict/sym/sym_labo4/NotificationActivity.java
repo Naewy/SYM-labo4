@@ -27,26 +27,32 @@ public class NotificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
 
+        // Link to GUI
         this.buttonSimple = (Button) findViewById(R.id.button1);
         this.actionButton= (Button) findViewById(R.id.button2);
         this.buttonWearables = (Button) findViewById(R.id.button3);
 
-        if(getIntent() != null)
+        if(getIntent() != null) {
             onNewIntent(getIntent());
+        }
 
+        // Listener associated with the "simple" notification button
         buttonSimple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int notificationId = 001; // The channel ID of the notification.
-                String id = "my_channel_01"; // Build intent for notification content
+                int notificationId = 1;
+                String id = getString(R.string.channel_1); // The channel ID of the notification
+
+                // Building of the intent for the notification content
                 Intent viewIntent = new Intent(NotificationActivity.this, NotificationActivity.class);
                 PendingIntent viewPendingIntent = PendingIntent.getActivity(NotificationActivity.this, 0, viewIntent, 0);
 
+                // Builder of notification layout
                 NotificationCompat.Builder notificationBuilder =
-                    new NotificationCompat.Builder(NotificationActivity.this, "001")
-                        .setSmallIcon(R.drawable.ic_alert_white_18dp)
-                        .setContentTitle("Toto")
-                        .setContentText("Yverdon les bains de sang")
+                    new NotificationCompat.Builder(NotificationActivity.this, id)
+                        .setSmallIcon(R.drawable.ic_lightbulb_on_white_18dp)
+                        .setContentTitle(getString(R.string.notif_title_1))
+                        .setContentText(getString(R.string.notif_content_1))
                         .setContentIntent(viewPendingIntent);
 
                 // Get an instance of the NotificationManager service
@@ -57,57 +63,61 @@ public class NotificationActivity extends AppCompatActivity {
             }
         });
 
+        // Listener associated with the "action" notification button
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int notificationId = 2;
+                String id = getString(R.string.channel_2); // The channel ID of the notification
+
+                // Preparation on an intent to view the map
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW);
-                String id = "my_channel_01";
                 Uri geoUri = Uri.parse("geo:0,0?q=" + Uri.encode("Yverdon-les-Bains"));
                 mapIntent.setData(geoUri);
                 PendingIntent mapPendingIntent = PendingIntent.getActivity(NotificationActivity.this, 0, mapIntent, 0);
 
+                // Builder of notification layout
                 NotificationCompat.Builder notificationBuilder =
                     new NotificationCompat.Builder(NotificationActivity.this, id)
                         .setSmallIcon(R.drawable.ic_lightbulb_on_white_18dp)
-                        .setContentTitle("Toto2")
-                        .setContentText("Yverdon-les-bains de sang")
-                        .setContentIntent(mapPendingIntent)
-                        .addAction(R.drawable.common_google_signin_btn_icon_light,
+                        .setContentTitle(getString(R.string.notif_title_2))
+                        .setContentText(getString(R.string.notif_content_2))
+                        .setContentIntent(mapPendingIntent) // Add the action in the notification
+                        .addAction(R.drawable.common_full_open_on_phone,
                             getString(R.string.app_name), mapPendingIntent);
 
                 // Get an instance of the NotificationManager service
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(NotificationActivity.this);
 
                 // Issue the notification with notification manager.
-                notificationManager.notify(02, notificationBuilder.build());
+                notificationManager.notify(notificationId, notificationBuilder.build());
             }
         });
 
+        // Listener associated with the "wearable-only" notification button
         buttonWearables.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int notificationId = 3;
+                String id = getString(R.string.channel_3); // The channel ID of the notification
 
+                // Preparation on an intent to view the map
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW);
-                // The channel ID of the notification.
                 Uri geoUri = Uri.parse("geo:0,0?q=" + Uri.encode("Yverdon-les-Bains"));
                 mapIntent.setData(geoUri);
-                PendingIntent mapPendingIntent =
-                    PendingIntent.getActivity(NotificationActivity.this, 0, mapIntent, 0);
+                PendingIntent mapPendingIntent = PendingIntent.getActivity(NotificationActivity.this, 0, mapIntent, 0);
 
-                String id = "my_channel_03";
-
-                // Create a WearableExtender to add functionality for wearables
+                // Create a WearableExtender to add functionality for only for wearables
                 NotificationCompat.WearableExtender wearableExtender =
                     new NotificationCompat.WearableExtender()
-                        .addAction(new NotificationCompat.Action(R.drawable.common_google_signin_btn_icon_light, getString(R.string.app_name), mapPendingIntent))
+                        .addAction(new NotificationCompat.Action(R.drawable.common_full_open_on_phone, getString(R.string.app_name), mapPendingIntent))
                         .setHintHideIcon(true);
 
-                // Create a NotificationCompat.Builder to build a standard notification
-                // then extend it with the WearableExtender
-                Notification notif = new NotificationCompat.Builder(NotificationActivity.this, id)
-                        .setContentTitle("Toto3")
-                        .setContentText("Yverdon-les-bains de sang")
-                        .setSmallIcon(R.drawable.common_google_signin_btn_icon_light)
+                // Builder of notification layout
+                Notification notification = new NotificationCompat.Builder(NotificationActivity.this, id)
+                        .setContentTitle(getString(R.string.notif_title_3))
+                        .setContentText(getString(R.string.notif_content_3))
+                        .setSmallIcon(R.drawable.ic_lightbulb_on_white_18dp)
                         .extend(wearableExtender)
                         .build();
 
@@ -115,17 +125,10 @@ public class NotificationActivity extends AppCompatActivity {
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(NotificationActivity.this);
 
                 // Issue the notification with notification manager.
-                notificationManager.notify(02, notif);
-
+                notificationManager.notify(notificationId, notification);
             }
         });
     }
-
-    /* A IMPLEMENTER */
-
-    /*
-     *  Code fourni pour les PendingIntent
-     */
 
     /*
      *  Method called by system when a new Intent is received
