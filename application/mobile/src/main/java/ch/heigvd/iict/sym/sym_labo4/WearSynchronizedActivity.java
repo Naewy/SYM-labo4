@@ -30,8 +30,6 @@ public class WearSynchronizedActivity extends AppCompatActivity implements DataC
         setContentView(R.layout.activity_wearsynchronized);
 
         Wearable.getDataClient(this).addListener(this);
-
-
     }
 
    /**

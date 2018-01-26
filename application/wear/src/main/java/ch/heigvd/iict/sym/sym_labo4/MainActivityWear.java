@@ -16,8 +16,7 @@ import com.google.android.gms.wearable.Wearable;
 import ch.heigvd.iict.sym.sym_labo4.widgets.CircularSliderRangeFixed;
 import ch.heigvd.iict.sym.wearcommon.Constants;
 
-
-/*
+/**
  * Allow us to send colors to the mobile application by modified sliders
  * Modified by Lara Chauffoureaux, Tano Iannetta and Wojciech Myszkorowski
  */
@@ -139,8 +138,6 @@ public class MainActivityWear extends WearableActivity {
         int r = (int) Math.round(255 * ((endAngleRed   - startAngleRed)   % 360) / 360.0);
         int g = (int) Math.round(255 * ((endAngleGreen - startAngleGreen) % 360) / 360.0);
         int b = (int) Math.round(255 * ((endAngleBlue  - startAngleBlue)  % 360) / 360.0);
-
-
 
         // Send colors
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(Constants.COLORS);
